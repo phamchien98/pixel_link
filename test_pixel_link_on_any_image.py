@@ -1,5 +1,6 @@
 #encoding = utf-8
-
+import sys
+sys.path.append("/content/pixel_link/pylib/src")
 import numpy as np
 import math
 import tensorflow as tf
@@ -46,7 +47,9 @@ tf.app.flags.DEFINE_float('moving_average_decay', 0.9999,
                           'The decay rate of ExponentionalMovingAverage')
 
 
+
 FLAGS = tf.app.flags.FLAGS
+import re
 
 def config_initialization():
     # image shape and feature layers shape inference
@@ -104,7 +107,11 @@ def test():
     saver = tf.train.Saver(var_list = variables_to_restore)
     with tf.Session() as sess:
         saver.restore(sess, util.tf.get_latest_ckpt(FLAGS.checkpoint_path))
-        
+        print("------------######-----------",FLAGS.dataset_dir)
+
+        FLAGS.dataset_dir=re.sub("#"," ",FLAGS.dataset_dir)
+        print("------------######-----------",FLAGS.dataset_dir)
+        print("FLAGS.dataset_dir====",FLAGS.dataset_dir)
         files = util.io.ls(FLAGS.dataset_dir)
         
         for image_name in files:
@@ -139,7 +146,7 @@ def test():
             draw_bboxes(image_data, bboxes_det, util.img.COLOR_RGB_RED)
 #             print util.sit(pixel_score)
 #             print util.sit(mask)
-            print util.sit(image_data)
+            print util.sit(image_data,path="/content/pixel_link/image_test_result/"+image_name)
                 
         
 def main(_):
