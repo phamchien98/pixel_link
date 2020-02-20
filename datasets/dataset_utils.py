@@ -17,7 +17,8 @@
 import tensorflow as tf
 import numpy as np
 slim = tf.contrib.slim
-
+import sys
+sys.path.append("/content/pixel_link/pylib/src")
 import util
 
 

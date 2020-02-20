@@ -1,12 +1,16 @@
 #encoding=utf-8
 import numpy as np;
 import tensorflow as tf
+import sys
+sys.path.append("/content/pixel_link/pylib/src")
 import util
 from dataset_utils import int64_feature, float_feature, bytes_feature, convert_to_example
+sys.path.append("/content/pixel_link/")
 import config
         
 
 def cvt_to_tfrecords(output_path , data_path, gt_path):
+    data_path="/content/pixel_link/icdar2015"
     image_names = util.io.ls(data_path, '.jpg')#[0:10];
     print "%d images found in %s"%(len(image_names), data_path);
     with tf.python_io.TFRecordWriter(output_path) as tfrecord_writer:
@@ -26,7 +30,7 @@ def cvt_to_tfrecords(output_path , data_path, gt_path):
             w *= 1.0;
             image_name = util.str.split(image_name, '.')[0];
             gt_name = 'gt_' + image_name + '.txt';
-            gt_filepath = util.io.join_path(gt_path, gt_name);
+            gt_filepath = util.io.join_path("/content/pixel_link/icdar2015_label", gt_name);
             lines = util.io.read_lines(gt_filepath);
                 
             for line in lines:
@@ -55,8 +59,8 @@ def cvt_to_tfrecords(output_path , data_path, gt_path):
             tfrecord_writer.write(example.SerializeToString())
         
 if __name__ == "__main__":
-    root_dir = util.io.get_absolute_path('~/dataset/ICDAR2015/Challenge4/')
-    output_dir = util.io.get_absolute_path('~/dataset/pixel_link/ICDAR/')
+    root_dir = util.io.get_absolute_path('/content/pixel_link/icdar2015')
+    output_dir = util.io.get_absolute_path('/content/pixel_link/icdar2015')
     util.io.mkdir(output_dir);
 
     training_data_dir = util.io.join_path(root_dir, 'ch4_training_images')

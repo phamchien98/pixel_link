@@ -7,6 +7,8 @@ from tensorflow.python.ops import control_flow_ops
 from datasets import dataset_factory
 
 from nets import pixel_link_symbol
+import sys
+sys.path.append("/content/pixel_link/pylib/src")
 import util
 import pixel_link
 
@@ -237,7 +239,7 @@ def create_clones(batch_queue):
     train_ops = [apply_grad_op]
     
     bn_update_op = util.tf.get_update_op()
-    if bn_update_op is not None:
+    if bn_update_op!=[]:
         train_ops.append(bn_update_op)
     
     # moving average
@@ -282,6 +284,7 @@ def train(train_op):
 def main(_):
     # The choice of return dataset object via initialization method maybe confusing, 
     # but I need to print all configurations in this method, including dataset information. 
+    FLAGS.train_dir="/content/gdrive/My Drive/Colab Notebooks/ky8_AI/pixel_link/checkpoint"
     dataset = config_initialization()   
     
     batch_queue = create_dataset_batch_queue(dataset)
